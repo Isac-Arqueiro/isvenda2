@@ -1,6 +1,10 @@
 <!doctype html>
 <html lang="pt-br">
 <head>
+  <link rel="manifest" href="manifest.json">
+<link rel="icon" href="https://i.imgur.com/iGMGa5z.jpeg">
+<link rel="apple-touch-icon" href="https://i.imgur.com/iGMGa5z.jpeg">
+<meta name="theme-color" content="#1e90ff">
   <meta charset="utf-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1" />
   <title>IC – Conserto de Celular</title>
@@ -836,5 +840,13 @@
       doc.save(`${item.cliente.replace(/\s+/g, '_')}_OS.pdf`);
     }
   </script>
+  <script>
+  if ('serviceWorker' in navigator) {
+    navigator.serviceWorker.register('service-worker.js')
+      .then(() => console.log('Service Worker registrado'))
+      .catch(err => console.error('Erro ao registrar SW', err));
+  }
+</script>
 </body>
 </html>
+
