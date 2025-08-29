@@ -1,204 +1,4 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-
-<head>
-  {
-  "name": "IS App",
-  "short_name": "IS",
-  "start_url": ".",
-  "display": "standalone",
-  "background_color": "#ffffff",
-  "theme_color": "#1e90ff",
-  "icons": [
-    {
-      "src": "https://i.imgur.com/iGMGa5z.jpeg",
-      "sizes": "192x192",
-      "type": "image/png"
-    },
-    {
-      "src": "https://i.imgur.com/iGMGa5z.jpeg",
-      "sizes": "512x512",
-      "type": "image/png"
-    }
-  ]
-}
-  <style>
-    * {
-      margin: 0;
-      padding: 0;
-      box-sizing: border-box;
-    }
-
-    body {
-      font-family: Arial, sans-serif;
-      background-color: #121212;
-      color: #ffffff;
-      height: 100vh;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-    }
-
-    .container {
-      background: #1e1e1e;
-      border: 1px solid #333;
-      padding: 2rem;
-      border-radius: 12px;
-      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
-      backdrop-filter: blur(6px);
-      text-align: center;
-      width: 90%;
-      max-width: 500px;
-    }
-
-    .hidden {
-      display: none;
-    }
-
-    img.logo {
-      width: 80px;
-      height: 80px;
-      border-radius: 50%;
-      object-fit: cover;
-      cursor: pointer;
-      border: 2px solid white;
-      margin-bottom: 1rem;
-    }
-
-    h1[contenteditable] {
-      font-size: 1.8rem;
-      margin-bottom: 1rem;
-      border-bottom: 1px dashed #444;
-      padding-bottom: 5px;
-    }
-
-    input,
-    textarea,
-    button,
-    select {
-      width: 100%;
-      padding: 0.8rem;
-      margin: 0.5rem 0;
-      border-radius: 8px;
-      border: 1px solid #444;
-      background-color: #1c1c1c;
-      color: white;
-      outline: none;
-    }
-
-    input::placeholder,
-    textarea::placeholder {
-      color: #bbbbbb;
-    }
-
-    button {
-      background-color: #1e90ff;
-      color: white;
-      font-weight: bold;
-      cursor: pointer;
-      transition: background 0.3s;
-    }
-
-    button:hover {
-      background-color: #0057b7;
-    }
-
-    .top-bar {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-bottom: 1rem;
-      border-bottom: 1px solid #333;
-      padding-bottom: 8px;
-    }
-
-    #videoModal {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      right: 0;
-      bottom: 0;
-      background: rgba(0, 0, 0, 0.85);
-      justify-content: center;
-      align-items: center;
-      z-index: 9999;
-    }
-
-    #videoModal video {
-      max-width: 100%;
-      border-radius: 10px;
-      border: 2px solid #444;
-    }
-
-    #captureBtn {
-      margin-top: 10px;
-      background-color: #333;
-      color: white;
-      border: 1px solid #555;
-      padding: 8px 15px;
-      font-size: 16px;
-      border-radius: 5px;
-      cursor: pointer;
-    }
-
-    #captureBtn:hover {
-      background-color: #555;
-    }
-
-    #modalHistorico {
-      display: none;
-      position: fixed;
-      top: 0;
-      left: 0;
-      width: 100vw;
-      height: 100vh;
-      background: rgba(18, 18, 18, 0.95);
-      color: white;
-      overflow: auto;
-      z-index: 10000;
-      padding: 20px;
-    }
-
-    #modalHistorico .close-btn {
-      float: right;
-      font-size: 1.5rem;
-      background: none;
-      border: none;
-      color: white;
-      cursor: pointer;
-    }
-
-    #resultadoBusca img {
-      width: 100px;
-      margin-top: 5px;
-      border-radius: 8px;
-      border: 1px solid #444;
-    }
-
-    a {
-      color: white;
-      text-decoration: none;
-    }
-
-    a:hover {
-      color: #1e90ff;
-    }
-
-    hr {
-      border-color: #444;
-      margin: 1rem 0;
-    }
-
-    #listaHistorico>div {
-      background: #222;
-      border: 1px solid #333;
-      border-radius: 8px;
-      padding: 10px;
-      margin-bottom: 10px;
-    }
-  </style>
-  <!-- LOGIN -->
+ <!-- LOGIN -->
   <div id="loginPage" class="container">
     <img id="logo" class="logo" src="https://i.imgur.com/1KQCNEK.jpeg" alt="Logo">
     <input type="file" id="logoUploader" accept="image/*" hidden>
@@ -473,20 +273,20 @@
       }
 
       container.innerHTML = clientes.map(c => `
-          <div style="border:1px solid #fff; padding:10px; margin-bottom:10px; border-radius:8px; text-align:left;">
-            <strong>${c.nome}</strong><br/>
-            Produto: ${c.produto || '-'}<br/>
-            Entrada: R$ ${c.entrada.toFixed(2)}<br/>
-            Fiado: R$ ${c.fiado.toFixed(2)}<br/>
-            Obs: ${c.obs || '-'}<br/>
-            Data: ${new Date(c.data).toLocaleString()}<br/>
-            ${c.foto ? `<img src="${c.foto}" alt="Foto">` : ''}
-            <div style="margin-top:10px;">
-              <button onclick="editarCliente(${c.id})">✏️ Editar</button>
-              <button onclick="apagarCliente(${c.id})" style="background-color:crimson;">🗑️ Apagar</button>
-            </div>
+        <div style="border:1px solid #fff; padding:10px; margin-bottom:10px; border-radius:8px; text-align:left;">
+          <strong>${c.nome}</strong><br/>
+          Produto: ${c.produto || '-'}<br/>
+          Entrada: R$ ${c.entrada.toFixed(2)}<br/>
+          Fiado: R$ ${c.fiado.toFixed(2)}<br/>
+          Obs: ${c.obs || '-'}<br/>
+          Data: ${new Date(c.data).toLocaleString()}<br/>
+          ${c.foto ? `<img src="${c.foto}" alt="Foto">` : ''}
+          <div style="margin-top:10px;">
+            <button onclick="editarCliente(${c.id})">✏️ Editar</button>
+            <button onclick="apagarCliente(${c.id})" style="background-color:crimson;">🗑️ Apagar</button>
           </div>
-        `).join('');
+        </div>
+      `).join('');
 
       document.getElementById('btnFecharBusca').style.display = 'inline-block';
     }
@@ -563,12 +363,12 @@
           if (dataFim) items = items.filter(i => new Date(i.data) <= new Date(dataFim));
           if (!items.length) return container.innerHTML = '<p>Nenhum registro encontrado.</p>';
           container.innerHTML = items.map(c => `
-              <div style="border-bottom:1px solid #444; padding:8px;">
-                <strong>${c.nome}</strong> - ${new Date(c.data).toLocaleString()}<br/>
-                Produto: ${c.produto || '-'} | Entrada: R$ ${c.entrada.toFixed(2)} | Fiado: R$ ${c.fiado.toFixed(2)}<br/>
-                Obs: ${c.obs || '-'}
-              </div>
-            `).join('');
+            <div style="border-bottom:1px solid #444; padding:8px;">
+              <strong>${c.nome}</strong> - ${new Date(c.data).toLocaleString()}<br/>
+              Produto: ${c.produto || '-'} | Entrada: R$ ${c.entrada.toFixed(2)} | Fiado: R$ ${c.fiado.toFixed(2)}<br/>
+              Obs: ${c.obs || '-'}
+            </div>
+          `).join('');
         }
       };
     }
@@ -607,8 +407,6 @@
       } else alert('Compartilhamento não suportado. Copie manualmente:\n\n' + texto);
     }
   </script>
-  </body>
+</body>
 
 </html>
-
-
