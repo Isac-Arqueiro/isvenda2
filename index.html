@@ -1,852 +1,602 @@
-<!doctype html>
-<html lang="pt-br">
+<!DOCTYPE html>
+<html lang="pt-BR">
+
 <head>
-  <link rel="manifest" href="manifest.json">
-<link rel="icon" href="https://i.imgur.com/iGMGa5z.jpeg">
-<link rel="apple-touch-icon" href="https://i.imgur.com/iGMGa5z.jpeg">
-<meta name="theme-color" content="#1e90ff">
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>IC – Conserto de Celular</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>IS App</title>
+  <link rel="icon" href="https://i.imgur.com/4JdbwrL.jpeg">
+  <link rel="apple-touch-icon" href="https://i.imgur.com/4JdbwrL.jpeg">
+  <meta name="theme-color" content="#1e90ff">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.legacy.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+
+  <!-- 🌑 ESTILO TEMA ESCURO -->
   <style>
-    /* Seu CSS permanece inalterado */
-    :root {
-      --bg: #0b1220;
-      --panel: #0f172a;
-      --card: #111827;
-      --muted: #9ca3af;
-      --text: #e5e7eb;
-      --accent: #22c55e;
-      --accent2: #60a5fa;
-      --danger: #ef4444;
-      --amber: #f59e0b;
-    }
-    * { box-sizing: border-box; }
-    body {
-      margin: 0;
-      background:
-        radial-gradient(1200px 600px at 80% -10%, #1e293b55, transparent),
-        linear-gradient(180deg, var(--bg), var(--panel));
-      color: var(--text);
-      font: 15px/1.5 system-ui, -apple-system, "Segoe UI", Roboto, Ubuntu;
-    }
-    .container { max-width: 1100px; margin: auto; padding: 16px; }
-    .login {
-      min-height: 100vh;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      padding: 24px;
-      background:
-        radial-gradient(600px 300px at 10% -10%, #06b6d455, transparent),
-        radial-gradient(600px 300px at 110% 110%, #22c55e55, transparent);
-    }
-    .login-card {
-      width: min(520px, 100%);
-      background: linear-gradient(180deg, rgba(255, 255, 255, .06), rgba(255, 255, 255, .02));
-      border: 1px solid rgba(255, 255, 255, .12);
-      border-radius: 24px;
-      padding: 24px;
-      box-shadow: 0 20px 60px rgba(0, 0, 0, .4);
-      text-align: center;
-    }
-    .logo {
-      width: 110px;
-      height: 110px;
-      margin: auto 0 8px;
-      object-fit: contain;
-      filter: drop-shadow(0 6px 18px rgba(0, 0, 0, .45));
-      cursor: pointer;
-    }
-    .brand {
-      font-weight: 900;
-      font-size: 42px;
-      letter-spacing: .5px;
-      cursor: text;
-    }
-    .subtitle {
-      color: var(--muted);
-      margin-top: -6px;
-      cursor: text;
-    }
-    .login input {
-      width: 100%;
-      padding: 12px 14px;
-      border-radius: 14px;
-      border: 1px solid rgba(255, 255, 255, .14);
-      background: rgba(255, 255, 255, .04);
-      color: var(--text);
-      margin-top: 10px;
-    }
-    .row {
-      display: flex;
-      gap: 10px;
-      flex-wrap: wrap;
-      align-items: center;
-    }
-    button {
-      border: 0;
-      border-radius: 14px;
-      padding: 10px 14px;
-      font-weight: 800;
-      cursor: pointer;
-    }
-    .btn {
-      background: linear-gradient(135deg, var(--accent2), #4f46e5);
-      color: white;
-    }
-    .btn-ghost {
-      background: linear-gradient(135deg, #374151, #1f2937);
-      color: var(--text);
-    }
-    .warn {
-      background: linear-gradient(135deg, var(--amber), #d97706);
-      color: #1b1600;
-    }
-    .app {
-      display: none;
-    }
-    header {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin: 18px 0;
-    }
-    .badge {
-      background: linear-gradient(135deg, var(--accent), #16a34a);
-      padding: .35rem .6rem;
-      border-radius: 999px;
-      color: #052e16;
-      font-weight: 800;
-    }
-    .grid { display: grid; gap: 12px; }
-    .grid-2 { grid-template-columns: 1.2fr .8fr; }
-    @media (max-width:900px) {
-      .grid-2 { grid-template-columns: 1fr; }
-    }
-    .card {
-      background: linear-gradient(180deg, rgba(255, 255, 255, .05), rgba(255, 255, 255, .02));
-      border: 1px solid rgba(255, 255, 255, .1);
-      border-radius: 20px;
-      padding: 16px;
-    }
-    label { font-size: .85rem; color: var(--muted); }
-    input, textarea, select {
-      width: 100%;
-      padding: 11px 12px;
-      border-radius: 12px;
-      border: 1px solid rgba(255, 255, 255, .14);
-      background: rgba(255, 255, 255, .04);
-      color: var(--text);
-    }
-    textarea { min-height: 84px; resize: vertical; }
-    table { width: 100%; border-collapse: collapse; }
-    th, td {
-      padding: 10px;
-      border-bottom: 1px solid rgba(255, 255, 255, .08);
-      vertical-align: top;
-      color: var(--text);
-    }
-    th {
-      color: var(--muted);
-      text-align: left;
-    }
-    .thumb {
-      width: 60px;
-      height: 60px;
-      border-radius: 10px;
-      object-fit: cover;
-      border: 1px solid rgba(255, 255, 255, .15);
-    }
-    .pill {
-      padding: .25rem .6rem;
-      border-radius: 999px;
-      font-size: .75rem;
-      font-weight: 800;
-      display: inline-block;
-      background: #0ea5e9;
-      color: #001a2b;
-    }
-    .muted { color: var(--muted); }
-    footer {
-      margin: 24px 0;
-      color: var(--muted);
-      text-align: center;
-      font-size: .85rem;
-    }
-    .clients li {
-      list-style: none;
+    * {
       margin: 0;
       padding: 0;
+      box-sizing: border-box;
     }
-    .client-btn {
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #121212;
+      color: #ffffff;
+      height: 100vh;
       display: flex;
-      justify-content: space-between;
-      gap: 8px;
-      width: 100%;
-      text-align: left;
-    }
-    .modal {
-      display: none;
-      position: fixed;
-      top: 0; left: 0;
-      width: 100%; height: 100%;
-      background: rgba(0, 0, 0, 0.6);
       justify-content: center;
       align-items: center;
     }
-    .modal-content {
-      background: #111827;
-      padding: 20px;
-      border-radius: 16px;
-      width: 90%; max-width: 500px;
-      max-height: 90%;
-      overflow: auto;
-      position: relative;
+
+    .container {
+      background: #1e1e1e;
+      border: 1px solid #333;
+      padding: 2rem;
+      border-radius: 12px;
+      box-shadow: 0 0 10px rgba(255, 255, 255, 0.05);
+      backdrop-filter: blur(6px);
+      text-align: center;
+      width: 90%;
+      max-width: 500px;
     }
-    .modal-content img {
-      max-width: 100px;
-      margin: 4px;
+
+    .hidden {
+      display: none;
+    }
+
+    img.logo {
+      width: 80px;
+      height: 80px;
+      border-radius: 50%;
+      object-fit: cover;
+      cursor: pointer;
+      border: 2px solid white;
+      margin-bottom: 1rem;
+    }
+
+    h1[contenteditable] {
+      font-size: 1.8rem;
+      margin-bottom: 1rem;
+      border-bottom: 1px dashed #444;
+      padding-bottom: 5px;
+    }
+
+    input,
+    textarea,
+    button,
+    select {
+      width: 100%;
+      padding: 0.8rem;
+      margin: 0.5rem 0;
       border-radius: 8px;
+      border: 1px solid #444;
+      background-color: #1c1c1c;
+      color: white;
+      outline: none;
     }
-    .modal-content h2 { margin-top: 0; }
+
+    input::placeholder,
+    textarea::placeholder {
+      color: #bbbbbb;
+    }
+
+    button {
+      background-color: #1e90ff;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    button:hover {
+      background-color: #0057b7;
+    }
+
+    .top-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 1rem;
+      border-bottom: 1px solid #333;
+      padding-bottom: 8px;
+    }
+
+    #videoModal {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      right: 0;
+      bottom: 0;
+      background: rgba(0, 0, 0, 0.85);
+      justify-content: center;
+      align-items: center;
+      z-index: 9999;
+    }
+
+    #videoModal video {
+      max-width: 100%;
+      border-radius: 10px;
+      border: 2px solid #444;
+    }
+
+    #captureBtn {
+      margin-top: 10px;
+      background-color: #333;
+      color: white;
+      border: 1px solid #555;
+      padding: 8px 15px;
+      font-size: 16px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    #captureBtn:hover {
+      background-color: #555;
+    }
+
+    #modalHistorico {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100vw;
+      height: 100vh;
+      background: rgba(18, 18, 18, 0.95);
+      color: white;
+      overflow: auto;
+      z-index: 10000;
+      padding: 20px;
+    }
+
+    #modalHistorico .close-btn {
+      float: right;
+      font-size: 1.5rem;
+      background: none;
+      border: none;
+      color: white;
+      cursor: pointer;
+    }
+
+    #resultadoBusca img {
+      width: 100px;
+      margin-top: 5px;
+      border-radius: 8px;
+      border: 1px solid #444;
+    }
+
+    a {
+      color: white;
+      text-decoration: none;
+    }
+
+    a:hover {
+      color: #1e90ff;
+    }
+
+    hr {
+      border-color: #444;
+      margin: 1rem 0;
+    }
+
+    #listaHistorico>div {
+      background: #222;
+      border: 1px solid #333;
+      border-radius: 8px;
+      padding: 10px;
+      margin-bottom: 10px;
+    }
   </style>
-</head>
+  <!-- LOGIN -->
+  <div id="loginPage" class="container">
+    <img id="logo" class="logo" src="https://i.imgur.com/1KQCNEK.jpeg" alt="Logo">
+    <input type="file" id="logoUploader" accept="image/*" hidden>
+    <h1 id="appTitle" contenteditable="true">IS App</h1>
+    <input type="text" id="username" placeholder="Nome de usuário" />
+    <input type="password" id="password" placeholder="Senha" />
+    <button id="loginBtn">Entrar</button>
+    <a href="https://wa.me/8486222876?text=Olá,%20quero%20falar%20com%20vocês!" target="_blank"
+      style="display: inline-block; margin-top: 15px; padding: 10px 20px; background-color: #25D366; color: white; border-radius: 8px; text-decoration: none; font-weight: bold;">
+      📱 Fale conosco
+    </a>
 
-<body>
+  </div>
 
-  <!-- Seção de Login -->
-  <section class="login" id="login">
-    <div class="login-card">
-      <img class="logo" id="logo" alt="Logo"
-           src="https://upload.wikimedia.org/wikipedia/commons/d/d7/Android_robot.svg">
-      <div class="brand" id="brand" contenteditable="true">IC</div>
-      <div class="subtitle" id="subtitle" contenteditable="true">Conserto de celular</div>
-      <input id="atendente" type="text" placeholder="Seu nome (atendente)" autocomplete="off">
-      <input id="pwd" type="password" placeholder="Senha" autocomplete="off">
-      <div class="row" style="justify-content:center;margin-top:10px">
-        <button type="button" class="btn" id="btnEntrar">Entrar</button>
-        <button type="button" class="btn-ghost" id="btnLimparSenha" title="Esqueci a senha / limpar">Limpar senha</button>
+  <!-- VENDAS -->
+  <div id="vendasPage" class="container hidden">
+    <div class="top-bar">
+
+      <div class="top-bar">
+        <strong>Atendimento ao Cliente</strong>
+        <div style="display: flex; gap: 10px;">
+          <button onclick="voltarLogin()">Sair</button>
+        </div>
       </div>
-      <div class="muted" style="margin-top:8px">A senha é salva neste dispositivo (local).</div>
+
     </div>
-  </section>
+    <button onclick="voltarLogin()">Sair</button>
+    <input type="text" id="nome" placeholder="Nome do Cliente" />
+    <input type="text" id="produto" placeholder="Modelo de Cel" />
+    <textarea id="obs" rows="3" placeholder="Serviço."></textarea>
+    <input type="number" id="entrada" placeholder="Valor Entrada (R$)" />
+    <input type="number" id="fiado" placeholder="Valor Fiado (R$)" />
+    <select id="cameraSelect"></select>
+    <button id="cameraBtn">📷 Tirar Foto</button>
+    <small id="fotoStatus">Nenhuma foto capturada</small>
+    <button id="saveBtn">Salvar Cliente</button>
+    <hr style="margin:20px 0; border:1px solid #ffffff33;">
+    <div class="top-bar"><strong>🔍 Buscar Cliente</strong></div>
+    <input type="text" id="buscarNome" placeholder="Digite o nome do cliente" />
+    <button onclick="buscarCliente()">Buscar</button>
+    <div id="resultadoBusca" style="margin-top:20px;"></div>
+    <button id="btnFecharBusca" onclick="fecharBusca()" style="display:none; background-color:crimson;">🔙
+      Voltar</button>
+    <button onclick="abrirHistorico()">📜 Histórico</button>
 
-  <!-- Seção do App -->
-  <section class="app" id="app">
-    <div class="container">
-      <header>
-        <div class="row" style="align-items:center">
-          <h1 style="margin:0;font-size:clamp(20px,3.2vw,28px)"> – Atendimento – </h1>
-        </div>
-        <div class="row" style="gap: 8px;">
-          <span class="badge">Local</span>
-          <button type="button" class="btn-ghost" id="btnSair">Sair</button>
-        </div>
-      </header>
+  </div>
 
-      <div class="grid grid-2">
-        <!-- Nova OS -->
-        <div class="card">
-          <div class="row" style="justify-content:space-between;align-items:center">
-            <strong style="font-size:1.05rem">Nova Ordem de Serviço</strong>
-          </div>
-          <div class="grid">
-            <div><label>Nome do cliente</label><input id="cli_nome" placeholder="Ex.: Maria Silva"></div>
-            <div><label>Modelo do celular</label><input id="modelo_celular" placeholder="Ex.: Samsung Galaxy A30"></div>
-            <div><label>Serviço</label><textarea id="servico" placeholder="Ex.: Troca de tela, diagnóstico, etc."></textarea></div>
-            <div class="row" style="gap:12px">
-              <div style="flex:1"><label>Data de entrada</label><input id="d_entrada" type="date"></div>
-              <div style="flex:1"><label>Data de garantia (3 meses padrão)</label><input id="d_garantia" type="date"></div>
-            </div>
-            <div class="grid" style="gap:8px">
-              <div>
-                <label>Fotos (câmera)</label>
-                <input id="in_fotos" type="file" accept="image/*" capture="environment" multiple>
-                <div id="previewFotos" style="display:flex; flex-wrap: wrap; margin-top: 8px;"></div>
-                <div class="muted">No celular, abre a câmera. Você pode selecionar/tirar várias.</div>
-              </div>
-              <div>
-                <label>Arquivos (fotos ou documentos)</label>
-                <input id="in_docs" type="file" accept="image/*,.pdf,.doc,.docx,.xls,.xlsx" multiple>
-              </div>
-            </div>
-            <div class="row">
-              <input id="preco" type="text" placeholder="Preço R$">
-              <button type="button" class="btn" id="btnSalvar">Salvar</button>
-              <button type="button" class="btn-ghost" id="btnLimpar">Limpar</button>
-              <span id="saveMsg" class="muted"></span>
-            </div>
-          </div>
-        </div>
-
-        <!-- Clientes -->
-        <div class="card">
-          <div class="row" style="justify-content:space-between;align-items:center">
-            <strong style="font-size:1.05rem">Clientes</strong>
-            <input id="buscaCliente" placeholder="Buscar cliente" style="max-width:220px">
-          </div>
-          <div id="listaClientes" class="clients" style="margin-top:8px;display:grid;gap:6px"></div>
-          <div class="row" style="margin-top:12px">
-            <button type="button" class="warn" id="btnLimparTudo">Limpar tudo</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- OS em tabela -->
-      <div class="card" style="margin-top:14px">
-        <div class="row" style="justify-content:space-between;align-items:center;margin-bottom:6px">
-          <strong style="font-size:1.05rem">Ordens de Serviço</strong>
-          <input id="buscar" placeholder="Buscar por cliente ou serviço" style="min-width:260px">
-        </div>
-        <div class="list">
-          <table>
-            <thead>
-              <tr>
-                <th>#</th><th>Cliente</th><th>Modelo</th><th>Serviço</th>
-                <th>Entrada</th><th>Garantia</th><th>Anexos</th><th>Ações</th>
-              </tr>
-            </thead>
-            <tbody id="tbody"></tbody>
-          </table>
-        </div>
-      </div>
-
-      <footer>Funciona <b>offline</b> e salva <b>localmente</b>. Para PDF, use “Visualizar”.</footer>
+  <!-- MODAIS -->
+  <div id="videoModal">
+    <div>
+      <video id="video" autoplay></video><br />
+      <button id="captureBtn">Capturar</button>
     </div>
-  </section>
+  </div>
 
-  <!-- Modal Visualização da OS -->
-  <div class="modal" id="visualModal">
-    <div class="modal-content">
-      <h2>Visualização da OS</h2>
-      <div id="visualConteudo"></div>
-      <button type="button" class="btn" id="btnDownloadPDF">Baixar PDF</button>
-      <button type="button" class="btn-ghost" id="btnFecharVisual">Fechar</button>
+  <div id="modalHistorico">
+    <button class="close-btn" onclick="fecharHistorico()">✖</button>
+    <h2>Histórico de Vendas</h2>
+    <label>Cliente:</label><br />
+    <input type="text" id="filtroClienteHistorico" placeholder="Nome do cliente"
+      style="width:80%; margin-bottom:10px;" /><br />
+    <label>Data Início:</label>
+    <input type="date" id="dataInicio" />
+    <label>Data Fim:</label>
+    <input type="date" id="dataFim" />
+    <button onclick="filtrarHistorico()">Filtrar</button>
+    <div id="listaHistorico"
+      style="margin-top:20px; max-height:60vh; overflow-y:auto; background:#222; padding:10px; border-radius:8px;">
+    </div>
+    <div style="margin-top:15px;">
+      <button onclick="baixarPDF()">Baixar PDF</button>
+      <button onclick="compartilharHistorico()">Compartilhar</button>
     </div>
   </div>
 
   <script>
-    // Substitui "Local" por "Histórico"
-    const btnLocal = document.querySelector('header .badge');
-    btnLocal.textContent = 'Histórico';
+    const validPasswords = ['00001', '0001', '0002', '0003'];
+    const dbName = 'vendaAppDB';
+    let db, fotoClienteBase64 = null, currentStream = null;
 
-    // Modal Histórico
-    const histModal = document.createElement('div');
-    histModal.className = 'modal';
-    histModal.innerHTML = `
-      <div class="modal-content">
-        <h2>Histórico de Vendas</h2>
-        <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:8px">
-          <div><label>Data início:</label><input type="date" id="histDataInicio"></div>
-          <div><label>Data fim:</label><input type="date" id="histDataFim"></div>
-        </div>
-        <div id="histConteudo" style="max-height:400px;overflow:auto;"></div>
-        <button type="button" class="btn" id="btnDownloadHist">Baixar PDF</button>
-        <button type="button" class="btn-ghost" id="btnFecharHist">Fechar</button>
-      </div>`;
-    document.body.appendChild(histModal);
+    const loginPage = document.getElementById('loginPage');
+    const vendasPage = document.getElementById('vendasPage');
+    const videoModal = document.getElementById('videoModal');
+    const video = document.getElementById('video');
+    const clientPhotoStatus = document.getElementById('fotoStatus');
 
-    const histDataInicio = document.getElementById('histDataInicio');
-    const histDataFim = document.getElementById('histDataFim');
-    const histConteudo = document.getElementById('histConteudo');
-    const btnFecharHist = document.getElementById('btnFecharHist');
-    const btnDownloadHist = document.getElementById('btnDownloadHist');
-
-    function carregarHistorico() {
-      const inicio = histDataInicio.value;
-      const fim = histDataFim.value;
-      if (!inicio || !fim) {
-        histConteudo.innerHTML = '<p>Escolha data de início e data final.</p>';
-        return;
-      }
-      const filtrado = data.filter(i => i.entrada >= inicio && i.entrada <= fim);
-      if (!filtrado.length) {
-        histConteudo.innerHTML = '<p>Nenhuma venda neste período.</p>';
-        return;
-      }
-      let totalGeral = 0;
-      const clientes = {};
-      filtrado.forEach(i => {
-        const precoNum = parseFloat((i.preco || '').replace(',', '.')) || 0;
-        totalGeral += precoNum;
-        clientes[i.cliente] = (clientes[i.cliente] || 0) + precoNum;
-      });
-      const ordenado = Object.entries(clientes).sort((a, b) => b[1] - a[1]);
-      let html = '<table style="width:100%;border-collapse:collapse"><tr><th>Cliente</th><th>Valor total</th></tr>';
-      ordenado.forEach(([c, valor]) => {
-        html += `<tr><td>${c}</td><td>R$ ${valor.toFixed(2)}</td></tr>`;
-      });
-      html += `</table><p><b>Total geral: R$ ${totalGeral.toFixed(2)}</b></p>`;
-      histConteudo.innerHTML = html;
+    if (!window.indexedDB) {
+      alert("Este navegador não suporta IndexedDB. Use um navegador mais moderno.");
     }
 
-    histDataInicio.onchange = carregarHistorico;
-    histDataFim.onchange = carregarHistorico;
+    document.addEventListener('DOMContentLoaded', () => {
+      initDB();
+    });
 
-    btnLocal.onclick = () => {
-      histModal.style.display = 'flex';
-      carregarHistorico();
-    };
-    btnFecharHist.onclick = () => { histModal.style.display = 'none'; };
-    btnDownloadHist.onclick = () => {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      const inicio = histDataInicio.value;
-      const fim = histDataFim.value;
-      doc.setFontSize(16);
-      doc.text(`Histórico de Vendas - ${inicio} até ${fim}`, 10, 20);
-      const filtrado = data.filter(i => i.entrada >= inicio && i.entrada <= fim);
-      let totalGeral = 0;
-      const clientes = {};
-      filtrado.forEach(i => {
-        const precoNum = parseFloat((i.preco || '').replace(',', '.')) || 0;
-        totalGeral += precoNum;
-        clientes[i.cliente] = (clientes[i.cliente] || 0) + precoNum;
-      });
-      const ordenado = Object.entries(clientes).sort((a, b) => b[1] - a[1]);
-      let y = 30;
-      ordenado.forEach(([c, valor]) => {
-        doc.setFontSize(12);
-        doc.text(`${c}: R$ ${valor.toFixed(2)}`, 10, y);
-        y += 8;
-        if (y > 280) { doc.addPage(); y = 20; }
-      });
-      doc.setFontSize(14);
-      doc.text(`Total geral: R$ ${totalGeral.toFixed(2)}`, 10, y + 10);
-      doc.save(`Historico_${inicio}_a_${fim}.pdf`);
-    };
-  </script>
-
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-
-  <script>
-    // Declaração global de variáveis e referências DOM
-    const loginSection = document.getElementById('login');
-    const appSection = document.getElementById('app');
-    const btnEntrar = document.getElementById('btnEntrar');
-    const btnSair = document.getElementById('btnSair');
-    const btnLimparSenha = document.getElementById('btnLimparSenha');
-    const atendenteInput = document.getElementById('atendente');
-    const pwdInput = document.getElementById('pwd');
-    const cli_nome = document.getElementById('cli_nome');
-    const modelo_celular = document.getElementById('modelo_celular');
-    const servico = document.getElementById('servico');
-    const d_entrada = document.getElementById('d_entrada');
-    const d_garantia = document.getElementById('d_garantia');
-    const preco = document.getElementById('preco');
-    const in_fotos = document.getElementById('in_fotos');
-    const in_docs = document.getElementById('in_docs');
-    const btnSalvar = document.getElementById('btnSalvar');
-    const btnLimpar = document.getElementById('btnLimpar');
-    const saveMsg = document.getElementById('saveMsg');
-    const listaClientes = document.getElementById('listaClientes');
-    const buscaCliente = document.getElementById('buscaCliente');
-    const tbody = document.getElementById('tbody');
-    const buscar = document.getElementById('buscar');
-    const btnLimparTudo = document.getElementById('btnLimparTudo');
-    const visualModal = document.getElementById('visualModal');
-    const visualConteudo = document.getElementById('visualConteudo');
-    const btnDownloadPDF = document.getElementById('btnDownloadPDF');
-    const btnFecharVisual = document.getElementById('btnFecharVisual');
-    const logo = document.getElementById('logo');
-    const brand = document.getElementById('brand');
-
-    const STORAGE_DATA = 'hc_data';
-    const STORAGE_SENHA = 'hc_senha';
-    const STORAGE_ATENDENTE = 'hc_atendente';
-    const STORAGE_LOGO = 'hc_logo';
-    const STORAGE_BRAND = 'hc_brand';
-    let data = JSON.parse(localStorage.getItem(STORAGE_DATA)) || [];
-
-    let osEditando = null; // **Correção: declaração global**
-
-    // IndexedDB para fotos
-    const dbRequest = indexedDB.open('ICBanco', 1);
-    let db;
-    dbRequest.onupgradeneeded = event => {
-      db = event.target.result;
-      if (!db.objectStoreNames.contains('imagens')) {
-        db.createObjectStore('imagens', { keyPath: 'id' });
-      }
-    };
-    dbRequest.onsuccess = event => { db = event.target.result; };
-    dbRequest.onerror = event => console.error('IndexedDB error:', event);
-
-    function blobToBase64(blob) {
-      return new Promise((resolve, reject) => {
-        const reader = new FileReader();
-        reader.onload = () => resolve(reader.result);
-        reader.onerror = reject;
-        reader.readAsDataURL(blob);
-      });
-    }
-
-    function salvarFotoIndexedDB(idOS, foto) {
-      if (!db) return setTimeout(() => salvarFotoIndexedDB(idOS, foto), 100);
-      const tx = db.transaction('imagens', 'readwrite');
-      const store = tx.objectStore('imagens');
-      const uniqueId = `${idOS}_${foto.name}_${foto.lastModified}`;
-      store.put({ idOS, id: uniqueId, blob: foto });
-    }
-
-    function recuperarFotosOS(idOS) {
-      return new Promise(resolve => {
-        if (!db) {
-          setTimeout(() => recuperarFotosOS(idOS).then(resolve), 100);
-          return;
-        }
-        const tx = db.transaction('imagens', 'readonly');
-        const store = tx.objectStore('imagens');
-        const req = store.getAll();
-        req.onsuccess = () => resolve(req.result.filter(i => i.idOS === idOS).map(i => i.blob));
-        req.onerror = () => resolve([]);
-      });
-    }
-
-    function apagarImagensOS(idOS) {
-      if (!db) return;
-      const tx = db.transaction('imagens', 'readwrite');
-      const store = tx.objectStore('imagens');
-      const req = store.getAll();
-      req.onsuccess = () => {
-        req.result
-          .filter(img => img.idOS === idOS)
-          .forEach(img => store.delete(img.id));
+    function initDB() {
+      const req = indexedDB.open(dbName, 2);
+      req.onerror = () => alert('Erro ao abrir DB');
+      req.onsuccess = e => {
+        db = e.target.result;
+        listarCameras();
+        carregarConfiguracoes();
+      };
+      req.onupgradeneeded = e => {
+        db = e.target.result;
+        if (!db.objectStoreNames.contains('config'))
+          db.createObjectStore('config', {keyPath: 'key'});
+        if (!db.objectStoreNames.contains('clientes'))
+          db.createObjectStore('clientes', {keyPath: 'id', autoIncrement: true});
       };
     }
 
-    function salvarLocal() {
-      localStorage.setItem(STORAGE_DATA, JSON.stringify(data));
+    function listarCameras() {
+      navigator.mediaDevices.enumerateDevices().then(devices => {
+        const videoDevices = devices.filter(d => d.kind === "videoinput");
+        const select = document.getElementById('cameraSelect');
+        select.innerHTML = "";
+        videoDevices.forEach((d, i) => {
+          const option = document.createElement('option');
+          option.value = d.deviceId;
+          option.text = d.label || `Câmera ${i + 1}`;
+          select.appendChild(option);
+        });
+      });
     }
 
-    function inicializarDatas() {
-      const hoje = new Date().toISOString().split('T')[0];
-      d_entrada.value = hoje;
-      const dg = new Date();
-      dg.setMonth(dg.getMonth() + 3);
-      d_garantia.value = dg.toISOString().split('T')[0];
-    }
-
-    function autenticar() {
-      const atend = atendenteInput.value.trim();
-      const pwd = pwdInput.value.trim();
-      if (!atend || !pwd) {
-        alert('Informe atendente e senha.');
-        return;
-      }
-      const validas = ['0000', '0001', '0002', '0003', '0004'];
-      if (!validas.includes(pwd)) {
-        alert('Senha inválida.');
-        return;
-      }
-      localStorage.setItem(STORAGE_SENHA, pwd);
-      localStorage.setItem(STORAGE_ATENDENTE, atend);
-      loginSection.style.display = 'none';
-      appSection.style.display = 'block';
-      carregarCacheLogo();
-      carregarDados();
-    }
-
-    btnEntrar.onclick = autenticar;
-    btnLimparSenha.onclick = () => {
-      localStorage.removeItem(STORAGE_SENHA);
-      localStorage.removeItem(STORAGE_ATENDENTE);
-      alert('Senha e atendente limpos do dispositivo.');
-    };
-    btnSair.onclick = () => {
-      loginSection.style.display = 'flex';
-      appSection.style.display = 'none';
-      atendenteInput.value = '';
-      pwdInput.value = '';
-      localStorage.removeItem(STORAGE_SENHA);
-      localStorage.removeItem(STORAGE_ATENDENTE);
-    };
-
-    function carregarCacheLogo() {
-      const l = localStorage.getItem(STORAGE_LOGO);
-      const b = localStorage.getItem(STORAGE_BRAND);
-      if (l) logo.src = l;
-      if (b) brand.textContent = b;
-    }
-
-    logo.onclick = () => {
-      const f = document.createElement('input');
-      f.type = 'file';
-      f.accept = 'image/*';
-      f.onchange = e => {
-        const file = e.target.files[0];
-        const reader = new FileReader();
-        reader.onload = () => {
-          logo.src = reader.result;
-          localStorage.setItem(STORAGE_LOGO, reader.result);
-        };
-        reader.readAsDataURL(file);
+    document.getElementById('logo').onclick = () => document.getElementById('logoUploader').click();
+    document.getElementById('logoUploader').addEventListener('change', e => {
+      const file = e.target.files[0];
+      if (!file) return;
+      const reader = new FileReader();
+      reader.onload = () => {
+        const dataUrl = reader.result;
+        document.getElementById('logo').src = dataUrl;
+        const tx = db.transaction('config', 'readwrite');
+        tx.objectStore('config').put({key: 'logo', value: dataUrl});
       };
-      f.click();
-    };
+      reader.readAsDataURL(file);
+    });
 
-    brand.onblur = () => localStorage.setItem(STORAGE_BRAND, brand.textContent);
+    function carregarConfiguracoes() {
+      const tx = db.transaction('config', 'readonly');
+      const store = tx.objectStore('config');
+      store.get('logo').onsuccess = e => {
+        if (e.target.result) document.getElementById('logo').src = e.target.result.value;
+      };
+      store.get('titulo').onsuccess = e => {
+        if (e.target.result) document.getElementById('appTitle').innerText = e.target.result.value;
+      };
+    }
 
-    window.onload = () => {
-      const s = localStorage.getItem(STORAGE_SENHA);
-      const a = localStorage.getItem(STORAGE_ATENDENTE);
-      if (s && a) {
-        atendenteInput.value = a;
-        pwdInput.value = s;
-        autenticar();
+    document.getElementById('appTitle').addEventListener('blur', e => {
+      const novoTitulo = e.target.innerText.trim();
+      db.transaction('config', 'readwrite').objectStore('config').put({key: 'titulo', value: novoTitulo});
+    });
+
+    document.getElementById('loginBtn').addEventListener('click', () => {
+      const user = document.getElementById('username').value.trim();
+      const pass = document.getElementById('password').value.trim();
+
+      if (!user || !pass) {
+        alert('Preencha o nome de usuário e a senha.');
+        return;
       }
-      inicializarDatas();
-      carregarCacheLogo();
-    };
 
-    function criarLinhaOS(item, idx) {
-      const tr = document.createElement('tr');
-      const anexos = document.createElement('div');
-      anexos.style.display = 'flex';
-      anexos.style.flexWrap = 'wrap';
-      anexos.style.gap = '4px';
+      // Primeiro: verifica se senha já foi salva anteriormente
+      const senhaSalva = localStorage.getItem('senhaAutorizada');
+      if (senhaSalva && senhaSalva === pass) {
+        entrarApp();
+        return;
+      }
 
-      (item.fotos || []).forEach(f => {
-        const img = document.createElement('img');
-        img.src = f;
-        img.className = 'thumb';
-        anexos.appendChild(img);
-      });
+      // Se não houver senha salva, verifica contra as válidas do script
+      if (validPasswords.includes(pass)) {
+        localStorage.setItem('senhaAutorizada', pass); // Salva no cache
+        entrarApp();
+      } else {
+        alert('Usuário ou senha inválidos');
+      }
+    });
 
-      (item.docs || []).forEach((f, i) => {
-        const a = document.createElement('a');
-        a.href = f;
-        a.target = "_blank";
-        a.textContent = `Doc ${i + 1}`;
-        a.style.cssText = 'font-size:.75rem;background:#374151;color:#fff;padding:2px 4px;border-radius:4px;';
-        anexos.appendChild(a);
-      });
+    function entrarApp() {
+      loginPage.classList.add('hidden');
+      vendasPage.classList.remove('hidden');
+    }
 
-      tr.innerHTML = `
-        <td>${idx + 1}</td>
-        <td>${item.cliente}</td>
-        <td>${item.modelo || '-'}</td>
-        <td>${item.servico}</td>
-        <td>${item.entrada}</td>
-        <td>${item.garantia}</td>
-        <td></td>
-        <td>
-          <div class="row" style="gap:4px;flex-wrap:wrap">
-            <button type="button" class="btn-ghost" onclick="visualizarOS(${idx})">Visualizar</button>
-            <button type="button" class="btn-ghost" onclick="editarOS(${idx})">Editar</button>
-            <button type="button" class="warn" onclick="apagarOS(${idx})">Apagar</button>
+
+    function voltarLogin() {
+      vendasPage.classList.add('hidden');
+      loginPage.classList.remove('hidden');
+      limparCampos();
+    }
+
+    document.getElementById('cameraBtn').addEventListener('click', abrirCamera);
+    function abrirCamera() {
+      const deviceId = document.getElementById('cameraSelect').value;
+
+      // Se estiver vazio ou sem permissões, usa traseira como padrão
+      const constraints = deviceId
+        ? {video: {deviceId: {exact: deviceId}}}
+        : {video: {facingMode: "environment"}}; // Tenta traseira
+
+      if (currentStream) currentStream.getTracks().forEach(t => t.stop());
+
+      navigator.mediaDevices.getUserMedia(constraints)
+        .then(stream => {
+          currentStream = stream;
+          video.srcObject = stream;
+          videoModal.style.display = 'flex';
+        })
+        .catch(err => {
+          console.error("Erro ao acessar câmera:", err);
+          alert("Erro ao acessar a câmera: " + err.message);
+        });
+    }
+
+    document.getElementById('captureBtn').addEventListener('click', () => {
+      const canvas = document.createElement('canvas');
+      canvas.width = video.videoWidth;
+      canvas.height = video.videoHeight;
+      canvas.getContext('2d').drawImage(video, 0, 0);
+      fotoClienteBase64 = canvas.toDataURL('image/png');
+      clientPhotoStatus.innerText = 'Foto capturada!';
+      videoModal.style.display = 'none';
+      if (currentStream) currentStream.getTracks().forEach(t => t.stop());
+    });
+
+    document.getElementById('saveBtn').addEventListener('click', () => {
+      const nome = document.getElementById('nome').value.trim();
+      if (!nome) return alert('Preencha o nome do cliente.');
+
+      const cliente = {
+        nome,
+        produto: document.getElementById('produto').value.trim(),
+        entrada: parseFloat(document.getElementById('entrada').value) || 0,
+        fiado: parseFloat(document.getElementById('fiado').value) || 0,
+        obs: document.getElementById('obs').value.trim(),
+        foto: fotoClienteBase64,
+        data: new Date().toISOString()
+      };
+      db.transaction('clientes', 'readwrite').objectStore('clientes').add(cliente).onsuccess = () => {
+        alert('Cliente salvo com sucesso!');
+        limparCampos();
+      };
+    });
+
+    function limparCampos() {
+      ['nome', 'produto', 'entrada', 'fiado', 'obs', 'buscarNome'].forEach(id => document.getElementById(id).value = '');
+      fotoClienteBase64 = null;
+      clientPhotoStatus.innerText = 'Nenhuma foto capturada';
+      document.getElementById('resultadoBusca').innerHTML = '';
+      document.getElementById('btnFecharBusca').style.display = 'none';
+    }
+
+    function buscarCliente() {
+      const busca = document.getElementById('buscarNome').value.trim().toLowerCase();
+      if (!busca) return alert('Digite o nome para buscar.');
+      const resultados = [];
+      db.transaction('clientes', 'readonly').objectStore('clientes').openCursor().onsuccess = e => {
+        const cursor = e.target.result;
+        if (cursor) {
+          if (cursor.value.nome.toLowerCase().includes(busca)) resultados.push(cursor.value);
+          cursor.continue();
+        } else mostrarResultadosBusca(resultados);
+      };
+    }
+
+    function mostrarResultadosBusca(clientes) {
+      const container = document.getElementById('resultadoBusca');
+      if (!clientes.length) {
+        container.innerHTML = '<p>Nenhum cliente encontrado.</p>';
+        return;
+      }
+
+      container.innerHTML = clientes.map(c => `
+          <div style="border:1px solid #fff; padding:10px; margin-bottom:10px; border-radius:8px; text-align:left;">
+            <strong>${c.nome}</strong><br/>
+            Produto: ${c.produto || '-'}<br/>
+            Entrada: R$ ${c.entrada.toFixed(2)}<br/>
+            Fiado: R$ ${c.fiado.toFixed(2)}<br/>
+            Obs: ${c.obs || '-'}<br/>
+            Data: ${new Date(c.data).toLocaleString()}<br/>
+            ${c.foto ? `<img src="${c.foto}" alt="Foto">` : ''}
+            <div style="margin-top:10px;">
+              <button onclick="editarCliente(${c.id})">✏️ Editar</button>
+              <button onclick="apagarCliente(${c.id})" style="background-color:crimson;">🗑️ Apagar</button>
+            </div>
           </div>
-        </td>`;
-      // Correção: anexos na coluna correta (6)
-      tr.children[6].appendChild(anexos);
-      return tr;
+        `).join('');
+
+      document.getElementById('btnFecharBusca').style.display = 'inline-block';
+    }
+    function editarCliente(id) {
+      const tx = db.transaction('clientes', 'readonly');
+      const store = tx.objectStore('clientes');
+      store.get(id).onsuccess = e => {
+        const c = e.target.result;
+        if (!c) return alert('Cliente não encontrado.');
+
+        // Preenche os campos
+        document.getElementById('nome').value = c.nome;
+        document.getElementById('produto').value = c.produto;
+        document.getElementById('entrada').value = c.entrada;
+        document.getElementById('fiado').value = c.fiado;
+        document.getElementById('obs').value = c.obs;
+        fotoClienteBase64 = c.foto || null;
+        document.getElementById('fotoStatus').innerText = fotoClienteBase64 ? 'Foto carregada do registro' : 'Nenhuma foto capturada';
+
+        // Deleta o antigo para evitar duplicidade
+        apagarCliente(id, false); // false = não pedir confirmação
+        window.scrollTo({top: 0, behavior: 'smooth'});
+      };
+    }
+    function apagarCliente(id, confirmar = true) {
+      if (confirmar && !confirm('Tem certeza que deseja apagar este cliente?')) return;
+
+      const tx = db.transaction('clientes', 'readwrite');
+      const store = tx.objectStore('clientes');
+      store.delete(id).onsuccess = () => {
+        alert('Cliente apagado com sucesso!');
+        buscarCliente(); // atualiza lista
+      };
     }
 
-    function carregarDados() {
-      tbody.innerHTML = '';
-      let filtrado = [...data];
-      const termo = buscar.value.trim().toLowerCase();
 
-      if (termo) {
-        filtrado = filtrado.filter(i =>
-          i.cliente.toLowerCase().includes(termo) ||
-          i.servico.toLowerCase().includes(termo)
-        );
-      } else if (filtrado.length) {
-        filtrado = [filtrado[filtrado.length - 1]]; // Mantido comportamento original
-      }
-
-      filtrado.forEach(item => {
-        const idx = data.indexOf(item);
-        tbody.appendChild(criarLinhaOS(item, idx));
-      });
-
-      carregarClientes();
+    function fecharBusca() {
+      limparCampos();
     }
 
-    function carregarClientes() {
-      listaClientes.innerHTML = '';
-      const uniqueClients = [...new Set(data.map(i => i.cliente))];
-      const termo = buscaCliente.value.trim().toLowerCase();
-      if (!termo) return;
+    function abrirHistorico() {
+      document.getElementById('modalHistorico').style.display = 'block';
+      filtrarHistorico();
+    }
 
-      uniqueClients.forEach(cliente => {
-        if (cliente.toLowerCase().includes(termo)) {
-          const li = document.createElement('li');
-          li.innerHTML = `<button type="button" class="client-btn">${cliente} <span class="pill" onclick="buscarPorCliente('${cliente}')">Ver</span></button>`;
-          listaClientes.appendChild(li);
+    function fecharHistorico() {
+      document.getElementById('modalHistorico').style.display = 'none';
+      document.getElementById('listaHistorico').innerHTML = '';
+      ['filtroClienteHistorico', 'dataInicio', 'dataFim'].forEach(id => document.getElementById(id).value = '');
+    }
+
+    function filtrarHistorico() {
+      const filtros = {
+        nome: document.getElementById('filtroClienteHistorico').value.trim(),
+        dataInicio: document.getElementById('dataInicio').value,
+        dataFim: document.getElementById('dataFim').value
+      };
+      carregarHistorico(filtros);
+    }
+
+    function carregarHistorico({nome, dataInicio, dataFim} = {}) {
+      const container = document.getElementById('listaHistorico');
+      container.innerHTML = 'Carregando...';
+      const todos = [];
+      db.transaction('clientes', 'readonly').objectStore('clientes').openCursor().onsuccess = e => {
+        const cursor = e.target.result;
+        if (cursor) {
+          todos.push(cursor.value);
+          cursor.continue();
+        } else {
+          let items = todos;
+          if (nome) items = items.filter(i => i.nome.toLowerCase().includes(nome.toLowerCase()));
+          if (dataInicio) items = items.filter(i => new Date(i.data) >= new Date(dataInicio));
+          if (dataFim) items = items.filter(i => new Date(i.data) <= new Date(dataFim));
+          if (!items.length) return container.innerHTML = '<p>Nenhum registro encontrado.</p>';
+          container.innerHTML = items.map(c => `
+              <div style="border-bottom:1px solid #444; padding:8px;">
+                <strong>${c.nome}</strong> - ${new Date(c.data).toLocaleString()}<br/>
+                Produto: ${c.produto || '-'} | Entrada: R$ ${c.entrada.toFixed(2)} | Fiado: R$ ${c.fiado.toFixed(2)}<br/>
+                Obs: ${c.obs || '-'}
+              </div>
+            `).join('');
         }
-      });
+      };
     }
+    async function baixarPDF() {
+      const {jsPDF} = window.jspdf;
+      const doc = new jsPDF();
+      const lista = document.getElementById('listaHistorico').innerText.trim();
 
-    window.buscarPorCliente = name => {
-      buscar.value = name;
-      carregarDados();
-    };
-
-    btnSalvar.onclick = async () => {
-      const cliente = cli_nome.value.trim();
-      const modelo = modelo_celular.value.trim();
-      const servicoTxt = servico.value.trim();
-      const entradaVal = d_entrada.value;
-      const garantiaVal = d_garantia.value;
-      const precoVal = preco.value.trim();
-
-      if (!cliente || !servicoTxt) {
-        alert('Informe cliente e serviço');
+      if (!lista) {
+        alert('Nenhum dado para gerar PDF.');
         return;
       }
 
-      const idOS = osEditando ? osEditando.idOS : Date.now();
-      const fotosArr = osEditando ? (osEditando.fotos || []) : [];
-      const docsArr = osEditando ? (osEditando.docs || []) : [];
+      doc.setFontSize(18);
+      doc.text('Histórico de Vendas', 10, 20);
 
-      if (in_fotos.files.length > 0) {
-        for (const f of in_fotos.files) {
-          const b64 = await blobToBase64(f);
-          fotosArr.push(b64);
-          salvarFotoIndexedDB(idOS, f);
-        }
-      }
-
-      if (in_docs.files.length > 0) {
-        for (const f of in_docs.files) {
-          const b64 = await blobToBase64(f);
-          docsArr.push(b64);
-        }
-      }
-
-      data.push({
-        idOS,
-        cliente,
-        modelo,
-        servico: servicoTxt,
-        entrada: entradaVal,
-        garantia: garantiaVal,
-        preco: precoVal,
-        fotos: fotosArr,
-        docs: docsArr
-      });
-
-      salvarLocal();
-      carregarDados();
-
-      saveMsg.textContent = 'OS salva!';
-      setTimeout(() => { saveMsg.textContent = ''; }, 1500);
-
-      cli_nome.value = '';
-      modelo_celular.value = '';
-      servico.value = '';
-      preco.value = '';
-      in_fotos.value = '';
-      in_docs.value = '';
-      osEditando = null;
-    };
-
-    btnLimparTudo.onclick = () => {
-      if (confirm('Apagar todas as OS?')) {
-        data.forEach(item => apagarImagensOS(item.idOS)); // Limpa imagens no IndexedDB
-        data = [];
-        salvarLocal();
-        carregarDados();
-      }
-    };
-
-    buscar.oninput = carregarDados;
-    buscaCliente.oninput = carregarClientes;
-
-    window.visualizarOS = async idx => {
-      const item = data[idx];
-      const blobs = await recuperarFotosOS(item.idOS);
-
-      const imgs = blobs.map(b => {
-        const url = URL.createObjectURL(b);
-        return `<img src="${url}" style="width:100px;border-radius:8px;">`;
-      }).join('');
-
-      const docsHtml = (item.docs || []).map((f, i) =>
-        `<a href="${f}" target="_blank" style="font-size:0.75rem;background:#374151;color:#fff;padding:2px 4px;border-radius:4px;margin:2px;display:inline-block">Doc ${i + 1}</a>`
-      ).join('');
-
-      visualConteudo.innerHTML = `
-        <h3>${item.cliente}</h3>
-        <p><b>Modelo:</b> ${item.modelo || '-'}</p>
-        <p><b>Serviço:</b> ${item.servico}</p>
-        <p><b>Entrada:</b> ${item.entrada}</p>
-        <p><b>Garantia:</b> ${item.garantia}</p>
-        <p><b>Preço:</b> ${item.preco}</p>
-        <div style="display:flex;flex-wrap:wrap;gap:6px;margin-top:6px">
-          ${imgs}${docsHtml}
-        </div>`;
-      visualModal.style.display = 'flex';
-
-      btnDownloadPDF.onclick = () => baixarPDF(item, blobs);
-    };
-
-    window.editarOS = idx => {
-      const item = data[idx];
-      cli_nome.value = item.cliente;
-      modelo_celular.value = item.modelo || '';
-      servico.value = item.servico;
-      d_entrada.value = item.entrada;
-      d_garantia.value = item.garantia;
-      preco.value = item.preco;
-      in_fotos.value = '';
-      in_docs.value = '';
-      osEditando = item;
-      data.splice(idx, 1);
-      salvarLocal();
-    };
-
-    window.apagarOS = idx => {
-      if (confirm('Apagar esta OS?')) {
-        const item = data[idx];
-        apagarImagensOS(item.idOS); // Remove imagens da OS no IndexedDB
-        data.splice(idx, 1);
-        salvarLocal();
-        carregarDados();
-      }
-    };
-
-    btnFecharVisual.onclick = () => { visualModal.style.display = 'none'; };
-
-    async function baixarPDF(item, blobs = []) {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(16);
-      doc.text(`OS Nº ${item.idOS}`, 10, 12);
-      doc.text(item.cliente, 10, 20);
       doc.setFontSize(12);
-      doc.text(`Modelo: ${item.modelo}`, 10, 28);
-      doc.text(`Serviço: ${item.servico}`, 10, 36);
-      doc.text(`Entrada: ${item.entrada}`, 10, 44);
-      doc.text(`Garantia: ${item.garantia}`, 10, 52);
-      doc.text(`Preço: R$ ${item.preco}`,
-
-10, 60);
-
-      let y = 68;
-      for (const b of blobs) {
-        const b64 = await blobToBase64(b);
-        doc.addImage(b64, 'JPEG', 10, y, 50, 50);
-        y += 60;
-        if (y > 270) {
+      let y = 30;
+      lista.split('\n').filter(line => line.trim()).forEach(line => {
+        if (y > 280) {
           doc.addPage();
           y = 20;
         }
-      }
+        doc.text(line, 10, y);
+        y += 8;
+      });
 
-      doc.save(`${item.cliente.replace(/\s+/g, '_')}_OS.pdf`);
+      doc.save('historico_vendas.pdf');
+    }
+
+    function compartilharHistorico() {
+      const texto = document.getElementById('listaHistorico').innerText.trim();
+      if (!texto) return alert('Nenhum dado para compartilhar.');
+      if (navigator.share) {
+        navigator.share({title: 'Histórico de Vendas', text: texto}).catch(() => alert('Erro ao compartilhar'));
+      } else alert('Compartilhamento não suportado. Copie manualmente:\n\n' + texto);
     }
   </script>
-  <script>
-  if ('serviceWorker' in navigator) {
-    navigator.serviceWorker.register('service-worker.js')
-      .then(() => console.log('Service Worker registrado'))
-      .catch(err => console.error('Erro ao registrar SW', err));
-  }
-</script>
-</body>
-</html>
+  </body>
 
+</html>
